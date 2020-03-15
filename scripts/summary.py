@@ -7,7 +7,7 @@ import sys
 import prettytable
 
 
-DEFAULT = ['glam', 'cgmath', 'nalgebra', 'euclid', 'vek']
+DEFAULT = ['glam', 'cgmath', 'nalgebra', 'nalgebra_f32x4', 'nalgebra_f32x8', 'nalgebra_f32x16', 'ultraviolet', 'euclid', 'vek']
 OPTIONAL = ['pathfinder']
 CHOICES = DEFAULT + OPTIONAL
 

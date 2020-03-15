@@ -47,12 +47,52 @@ macro_rules! bench_euclid {
 }
 
 #[macro_export]
+macro_rules! bench_ultraviolet {
+    ($group:ident, $closure:expr) => {
+        bench_lib!("ultraviolet", $group, $closure)
+    };
+    ($group:ident, $size:expr, $closure:expr) => {
+        bench_lib!("ultraviolet", $group, $size, $closure)
+    };
+}
+
+#[macro_export]
 macro_rules! bench_nalgebra {
     ($group:ident, $closure:expr) => {
         bench_lib!("nalgebra", $group, $closure)
     };
     ($group:ident, $size:expr, $closure:expr) => {
         bench_lib!("nalgebra", $group, $size, $closure)
+    };
+}
+
+#[macro_export]
+macro_rules! bench_nalgebra_f32x4 {
+    ($group:ident, $closure:expr) => {
+        bench_lib!("nalgebra_f32x4", $group, $closure)
+    };
+    ($group:ident, $size:expr, $closure:expr) => {
+        bench_lib!("nalgebra_f32x4", $group, $size, $closure)
+    };
+}
+
+#[macro_export]
+macro_rules! bench_nalgebra_f32x8 {
+    ($group:ident, $closure:expr) => {
+        bench_lib!("nalgebra_f32x8", $group, $closure)
+    };
+    ($group:ident, $size:expr, $closure:expr) => {
+        bench_lib!("nalgebra_f32x8", $group, $size, $closure)
+    };
+}
+
+#[macro_export]
+macro_rules! bench_nalgebra_f32x16 {
+    ($group:ident, $closure:expr) => {
+        bench_lib!("nalgebra_f32x16", $group, $closure)
+    };
+    ($group:ident, $size:expr, $closure:expr) => {
+        bench_lib!("nalgebra_f32x16", $group, $size, $closure)
     };
 }
 
@@ -96,8 +136,90 @@ macro_rules! bench_unop {
         let mut outputs = vec![<$t as mathbench::BenchValue>::random_value(&mut rng).$unop(); SIZE];
         let mut i = 0;
         $b.iter(|| {
+            i = (i + 16) & (SIZE - 1);
+            unsafe { *outputs.get_unchecked_mut(i + 00) = inputs.get_unchecked(i + 00).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 01) = inputs.get_unchecked(i + 01).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 02) = inputs.get_unchecked(i + 02).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 03) = inputs.get_unchecked(i + 03).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 04) = inputs.get_unchecked(i + 04).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 05) = inputs.get_unchecked(i + 05).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 06) = inputs.get_unchecked(i + 06).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 07) = inputs.get_unchecked(i + 07).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 08) = inputs.get_unchecked(i + 08).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 09) = inputs.get_unchecked(i + 09).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 10) = inputs.get_unchecked(i + 10).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 11) = inputs.get_unchecked(i + 11).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 12) = inputs.get_unchecked(i + 12).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 13) = inputs.get_unchecked(i + 13).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 14) = inputs.get_unchecked(i + 14).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 15) = inputs.get_unchecked(i + 15).$unop() }
+        });
+        criterion::black_box(outputs);
+    }};
+}
+
+#[macro_export]
+macro_rules! bench_unop4 {
+    ($b: ident, op => $unop: ident, ty => $t:ty) => {{
+        const SIZE: usize = 1 << 13;
+        let mut rng = rand_pcg::Pcg64Mcg::new(rand::random());
+        let inputs = criterion::black_box(
+            (0..SIZE)
+                .map(|_| <$t as mathbench::BenchValue>::random_value(&mut rng))
+                .collect::<Vec<_>>(),
+        );
+        // pre-fill output vector with some random value
+        let mut outputs = vec![<$t as mathbench::BenchValue>::random_value(&mut rng).$unop(); SIZE];
+        let mut i = 0;
+        $b.iter(|| {
+            i = (i + 4) & (SIZE - 1);
+            unsafe { *outputs.get_unchecked_mut(i + 00) = inputs.get_unchecked(i + 00).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 01) = inputs.get_unchecked(i + 01).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 02) = inputs.get_unchecked(i + 02).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 03) = inputs.get_unchecked(i + 03).$unop() }
+        });
+        criterion::black_box(outputs);
+    }};
+}
+
+#[macro_export]
+macro_rules! bench_unop8 {
+    ($b: ident, op => $unop: ident, ty => $t:ty) => {{
+        const SIZE: usize = 1 << 13;
+        let mut rng = rand_pcg::Pcg64Mcg::new(rand::random());
+        let inputs = criterion::black_box(
+            (0..SIZE)
+                .map(|_| <$t as mathbench::BenchValue>::random_value(&mut rng))
+                .collect::<Vec<_>>(),
+        );
+        // pre-fill output vector with some random value
+        let mut outputs = vec![<$t as mathbench::BenchValue>::random_value(&mut rng).$unop(); SIZE];
+        let mut i = 0;
+        $b.iter(|| {
+            i = (i + 2) & (SIZE - 1);
+            unsafe { *outputs.get_unchecked_mut(i + 00) = inputs.get_unchecked(i + 00).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 01) = inputs.get_unchecked(i + 01).$unop() }
+        });
+        criterion::black_box(outputs);
+    }};
+}
+
+#[macro_export]
+macro_rules! bench_unop16 {
+    ($b: ident, op => $unop: ident, ty => $t:ty) => {{
+        const SIZE: usize = 1 << 13;
+        let mut rng = rand_pcg::Pcg64Mcg::new(rand::random());
+        let inputs = criterion::black_box(
+            (0..SIZE)
+                .map(|_| <$t as mathbench::BenchValue>::random_value(&mut rng))
+                .collect::<Vec<_>>(),
+        );
+        // pre-fill output vector with some random value
+        let mut outputs = vec![<$t as mathbench::BenchValue>::random_value(&mut rng).$unop(); SIZE];
+        let mut i = 0;
+        $b.iter(|| {
             i = (i + 1) & (SIZE - 1);
-            unsafe { *outputs.get_unchecked_mut(i) = inputs.get_unchecked(i).$unop() }
+            unsafe { *outputs.get_unchecked_mut(i + 00) = inputs.get_unchecked(i + 00).$unop() }
         });
         criterion::black_box(outputs);
     }};

@@ -16,8 +16,8 @@ macro_rules! bench_euler {
         let mut rng = rand_pcg::Pcg64Mcg::new(rand::random());
         let mut data = TestData {
             acc: vec![<$t as mathbench::BenchValue>::random_value(&mut rng); *$size],
-            vel: vec![$zero; *$size],
-            pos: vec![$zero; *$size],
+            vel: vec![<$t as mathbench::BenchValue>::random_value(&mut rng); *$size],
+            pos: vec![<$t as mathbench::BenchValue>::random_value(&mut rng); *$size],
         };
 
         let dt = $dt;
@@ -44,9 +44,28 @@ fn bench_euler_3d(c: &mut Criterion) {
             use cgmath::{prelude::*, Vector3};
             bench_euler!(b, size, ty => Vector3<f32>, zero => Vector3::zero(), dt => UPDATE_RATE)
         });
+        bench_ultraviolet!(group, size, |b, size| {
+            use ultraviolet::{f32x4, Wec3};
+            bench_euler!(b, &((*size as f32 / 4.0).ceil() as usize), ty => Wec3, zero => Wec3::zero(), dt => f32x4::from(UPDATE_RATE))
+        });
         bench_nalgebra!(group, size, |b, size| {
             use nalgebra::{zero, Vector3};
             bench_euler!(b, size, ty => Vector3<f32>, zero => zero(), dt => UPDATE_RATE);
+        });
+        bench_nalgebra_f32x4!(group, size, |b, size| {
+            use nalgebra::{zero, Vector3};
+            use packed_simd::f32x4;
+            bench_euler!(b, &((*size as f32 / 4.0).ceil() as usize), ty => Vector3<f32x4>, zero => zero(), dt => f32x4::splat(UPDATE_RATE));
+        });
+        bench_nalgebra_f32x8!(group, size, |b, size| {
+            use nalgebra::{zero, Vector3};
+            use packed_simd::f32x8;
+            bench_euler!(b, &((*size as f32 / 8.0).ceil() as usize), ty => Vector3<f32x8>, zero => zero(), dt => f32x8::splat(UPDATE_RATE));
+        });
+        bench_nalgebra_f32x16!(group, size, |b, size| {
+            use nalgebra::{zero, Vector3};
+            use packed_simd::f32x16;
+            bench_euler!(b, &((*size as f32 / 16.0).ceil() as usize), ty => Vector3<f32x16>, zero => zero(), dt => f32x16::splat(UPDATE_RATE));
         });
         bench_euclid!(group, size, |b, size| {
             use euclid::{UnknownUnit, Vector3D};
@@ -76,9 +95,28 @@ fn bench_euler_2d(c: &mut Criterion) {
             use cgmath::{prelude::*, Vector2};
             bench_euler!(b, size, ty => Vector2<f32>, zero => Vector2::zero(), dt => UPDATE_RATE)
         });
+        bench_ultraviolet!(group, size, |b, size| {
+            use ultraviolet::{f32x4, Wec2};
+            bench_euler!(b, &((*size as f32 / 4.0).ceil() as usize), ty => Wec2, zero => Wec2::zero(), dt => f32x4::from(UPDATE_RATE))
+        });
         bench_nalgebra!(group, size, |b, size| {
             use nalgebra::{zero, Vector2};
             bench_euler!(b, size, ty => Vector2<f32>, zero => zero(), dt => UPDATE_RATE);
+        });
+        bench_nalgebra_f32x4!(group, size, |b, size| {
+            use nalgebra::{zero, Vector2};
+            use packed_simd::f32x4;
+            bench_euler!(b, &((*size as f32 / 4.0).ceil() as usize), ty => Vector2<f32x4>, zero => zero(), dt => f32x4::splat(UPDATE_RATE));
+        });
+        bench_nalgebra_f32x8!(group, size, |b, size| {
+            use nalgebra::{zero, Vector2};
+            use packed_simd::f32x8;
+            bench_euler!(b, &((*size as f32 / 8.0).ceil() as usize), ty => Vector2<f32x8>, zero => zero(), dt => f32x8::splat(UPDATE_RATE));
+        });
+        bench_nalgebra_f32x16!(group, size, |b, size| {
+            use nalgebra::{zero, Vector2};
+            use packed_simd::f32x16;
+            bench_euler!(b, &((*size as f32 / 16.0).ceil() as usize), ty => Vector2<f32x16>, zero => zero(), dt => f32x16::splat(UPDATE_RATE));
         });
         bench_euclid!(group, size, |b, size| {
             use euclid::{UnknownUnit, Vector2D};

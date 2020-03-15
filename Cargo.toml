@@ -6,7 +6,12 @@ edition = "2018"
 
 [features]
 # defaults can be disabled for benchmarks but are required for tests
-default = ["cgmath", "euclid", "nalgebra", "vek"]
+default = ["cgmath", "euclid", "nalgebra", "nalgebra_f32x4", "nalgebra_f32x8", "nalgebra_f32x16", "ultraviolet", "vek", "pathfinder_geometry"]
+nalgebra_f32x4 = [ "nalgebra", "packed_simd"]
+nalgebra_f32x8 = [ "nalgebra", "packed_simd"]
+nalgebra_f32x16 = [ "nalgebra", "packed_simd"]
+
+
 
 [dependencies]
 mint = "0.5.4"
@@ -20,8 +25,16 @@ features = ["mint", "rand", "debug-glam-assert"]
 # optional = true
 
 [dependencies.nalgebra]
-version = "0.19.0"
+version = "0.20.0"
 features = ["std", "mint"]
+optional = true
+
+[dependencies.ultraviolet]
+version = "0.4"
+optional = true
+
+[dependencies.packed_simd]
+version = "0.3"
 optional = true
 
 [dependencies.cgmath]
@@ -86,5 +99,6 @@ name = "vector3"
 harness = false
 
 [profile.bench]
-debug = true
-# lto = true
+#debug = true
+#lto = true
+codegen-units = 1

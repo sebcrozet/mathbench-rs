@@ -15,9 +15,28 @@ fn bench_vector3_ret_self(c: &mut Criterion) {
         use cgmath::Vector3;
         bench_unop!(b, op => ret_self, ty => Vector3<f32>)
     });
+    bench_ultraviolet!(group, |b| {
+        use ultraviolet::Wec3;
+        bench_unop!(b, op => ret_self, ty => Wec3)
+    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Vector3;
         bench_unop!(b, op => ret_self, ty => Vector3<f32>)
+    });
+    bench_nalgebra_f32x4!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x4;
+        bench_unop!(b, op => ret_self, ty => Vector3<f32x4>)
+    });
+    bench_nalgebra_f32x8!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x8;
+        bench_unop!(b, op => ret_self, ty => Vector3<f32x8>)
+    });
+    bench_nalgebra_f32x16!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x16;
+        bench_unop!(b, op => ret_self, ty => Vector3<f32x16>)
     });
     bench_vek!(group, |b| {
         use vek::Vec3;
@@ -36,9 +55,28 @@ fn bench_vector3_length(c: &mut Criterion) {
         use cgmath::{InnerSpace, Vector3};
         bench_unop!(b, op => magnitude, ty => Vector3<f32>)
     });
+    bench_ultraviolet!(group, |b| {
+        use ultraviolet::Wec3;
+        bench_unop!(b, op => mag, ty => Wec3)
+    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Vector3;
         bench_unop!(b, op => magnitude, ty => Vector3<f32>)
+    });
+    bench_nalgebra_f32x4!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x4;
+        bench_unop!(b, op => magnitude, ty => Vector3<f32x4>)
+    });
+    bench_nalgebra_f32x8!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x8;
+        bench_unop!(b, op => magnitude, ty => Vector3<f32x8>)
+    });
+    bench_nalgebra_f32x16!(group, |b| {
+        use nalgebra::Vector3;
+        use packed_simd::f32x16;
+        bench_unop!(b, op => magnitude, ty => Vector3<f32x16>)
     });
     bench_euclid!(group, |b| {
         use euclid::{UnknownUnit, Vector3D};

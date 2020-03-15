@@ -298,7 +298,8 @@ pub mod cgmath_support {
 pub mod nalgebra_support {
     use super::mint_support::*;
     use super::BenchValue;
-    use rand::Rng;
+    use packed_simd::{f32x16, f32x4, f32x8};
+    use rand::{Rng, SeedableRng};
     impl_bench_value!(nalgebra::Matrix2<f32>, random_mint_invertible_mat2);
     impl_bench_value!(nalgebra::Matrix3<f32>, random_mint_homogeneous_mat3);
     impl_bench_value!(nalgebra::Matrix4<f32>, random_mint_homogeneous_mat4);
@@ -310,6 +311,15 @@ pub mod nalgebra_support {
     impl_bench_value!(nalgebra::Vector2<f32>, random_na_vec2);
     impl_bench_value!(nalgebra::Vector3<f32>, random_na_vec3);
     impl_bench_value!(nalgebra::Vector4<f32>, random_na_vec4);
+    impl_bench_value!(nalgebra::Vector2<f32x4>, random_na_vec2x4);
+    impl_bench_value!(nalgebra::Vector3<f32x4>, random_na_vec3x4);
+    impl_bench_value!(nalgebra::Vector4<f32x4>, random_na_vec4x4);
+    impl_bench_value!(nalgebra::Vector2<f32x8>, random_na_vec2x8);
+    impl_bench_value!(nalgebra::Vector3<f32x8>, random_na_vec3x8);
+    impl_bench_value!(nalgebra::Vector4<f32x8>, random_na_vec4x8);
+    impl_bench_value!(nalgebra::Vector2<f32x16>, random_na_vec2x16);
+    impl_bench_value!(nalgebra::Vector3<f32x16>, random_na_vec3x16);
+    impl_bench_value!(nalgebra::Vector4<f32x16>, random_na_vec4x16);
 
     // nalgebra random functions --------------------------------------------------
     fn random_na_quat<R>(rng: &mut R) -> nalgebra::UnitQuaternion<f32>
@@ -368,6 +378,108 @@ pub mod nalgebra_support {
         rng.gen::<[f32; 4]>().into()
     }
 
+    fn random_na_vec2x4<R>(rng: &mut R) -> nalgebra::Vector2<f32x4>
+    where
+        R: Rng,
+    {
+        [random_f32x4(rng), random_f32x4(rng)].into()
+    }
+
+    fn random_na_vec3x4<R>(rng: &mut R) -> nalgebra::Vector3<f32x4>
+    where
+        R: Rng,
+    {
+        [random_f32x4(rng), random_f32x4(rng), random_f32x4(rng)].into()
+    }
+
+    fn random_na_vec4x4<R>(rng: &mut R) -> nalgebra::Vector4<f32x4>
+    where
+        R: Rng,
+    {
+        [
+            random_f32x4(rng),
+            random_f32x4(rng),
+            random_f32x4(rng),
+            random_f32x4(rng),
+        ]
+        .into()
+    }
+
+    fn random_na_vec2x8<R>(rng: &mut R) -> nalgebra::Vector2<f32x8>
+    where
+        R: Rng,
+    {
+        [random_f32x8(rng), random_f32x8(rng)].into()
+    }
+
+    fn random_na_vec3x8<R>(rng: &mut R) -> nalgebra::Vector3<f32x8>
+    where
+        R: Rng,
+    {
+        [random_f32x8(rng), random_f32x8(rng), random_f32x8(rng)].into()
+    }
+
+    fn random_na_vec4x8<R>(rng: &mut R) -> nalgebra::Vector4<f32x8>
+    where
+        R: Rng,
+    {
+        [
+            random_f32x8(rng),
+            random_f32x8(rng),
+            random_f32x8(rng),
+            random_f32x8(rng),
+        ]
+        .into()
+    }
+
+    fn random_na_vec2x16<R>(rng: &mut R) -> nalgebra::Vector2<f32x16>
+    where
+        R: Rng,
+    {
+        [random_f32x16(rng), random_f32x16(rng)].into()
+    }
+
+    fn random_na_vec3x16<R>(rng: &mut R) -> nalgebra::Vector3<f32x16>
+    where
+        R: Rng,
+    {
+        [random_f32x16(rng), random_f32x16(rng), random_f32x16(rng)].into()
+    }
+
+    fn random_na_vec4x16<R>(rng: &mut R) -> nalgebra::Vector4<f32x16>
+    where
+        R: Rng,
+    {
+        [
+            random_f32x16(rng),
+            random_f32x16(rng),
+            random_f32x16(rng),
+            random_f32x16(rng),
+        ]
+        .into()
+    }
+
+    fn random_f32x4<R>(rng: &mut R) -> packed_simd::f32x4
+    where
+        R: Rng,
+    {
+        rng.gen::<[f32; 4]>().into()
+    }
+
+    fn random_f32x8<R>(rng: &mut R) -> packed_simd::f32x8
+    where
+        R: Rng,
+    {
+        rng.gen::<[f32; 8]>().into()
+    }
+
+    fn random_f32x16<R>(rng: &mut R) -> packed_simd::f32x16
+    where
+        R: Rng,
+    {
+        rng.gen::<[f32; 16]>().into()
+    }
+
     pub fn nalgebra_mat4_det(m: &nalgebra::Matrix4<f32>) -> f32 {
         m.determinant()
     }
@@ -385,6 +497,48 @@ pub mod nalgebra_support {
         rhs: &nalgebra::Matrix4<f32>,
     ) -> nalgebra::Matrix4<f32> {
         lhs * rhs
+    }
+}
+
+#[cfg(feature = "ultraviolet")]
+pub mod ultraviolet_support {
+    use super::BenchValue;
+    use rand::{Rng, SeedableRng};
+    use ultraviolet::{Wat2, Wat3, Wec2, Wec3};
+
+    impl BenchValue for Wec2 {
+        fn random_value<R: rand::Rng>(rng: &mut R) -> Self {
+            Wec2::new(
+                ultraviolet::f32x4::from(rng.gen::<[f32; 4]>()),
+                ultraviolet::f32x4::from(rng.gen::<[f32; 4]>()),
+            )
+        }
+    }
+
+    impl BenchValue for Wec3 {
+        fn random_value<R: rand::Rng>(rng: &mut R) -> Self {
+            Wec3::new(
+                ultraviolet::f32x4::from(rng.gen::<[f32; 4]>()),
+                ultraviolet::f32x4::from(rng.gen::<[f32; 4]>()),
+                ultraviolet::f32x4::from(rng.gen::<[f32; 4]>()),
+            )
+        }
+    }
+
+    impl BenchValue for Wat2 {
+        fn random_value<R: rand::Rng>(rng: &mut R) -> Self {
+            Wat2::new(Wec2::random_value(rng), Wec2::random_value(rng))
+        }
+    }
+
+    impl BenchValue for Wat3 {
+        fn random_value<R: rand::Rng>(rng: &mut R) -> Self {
+            Wat3::new(
+                Wec3::random_value(rng),
+                Wec3::random_value(rng),
+                Wec3::random_value(rng),
+            )
+        }
     }
 }
 
