@@ -33,9 +33,9 @@ optional = true
 [dependencies.ultraviolet]
 version = "0.4"
 optional = true
-
+fi
 [dependencies.simba]
-path = "../simba"
+version = "0.1"
 features = [ "simd" ]
 optional = true
 
