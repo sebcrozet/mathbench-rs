@@ -6,7 +6,7 @@ edition = "2018"
 
 [features]
 # defaults can be disabled for benchmarks but are required for tests
-default = ["cgmath", "euclid", "nalgebra", "nalgebra_f32x4", "nalgebra_f32x8", "nalgebra_f32x16", "ultraviolet", "ultraviolet_f32x4", "vek", "pathfinder_geometry"]
+default = ["cgmath", "euclid", "nalgebra", "nalgebra_f32x4", "nalgebra_f32x8", "nalgebra_f32x16", "ultraviolet", "ultraviolet_f32x4", "vek"]
 ultraviolet_f32x4 = [ "ultraviolet" ]
 nalgebra_f32x4 = [ "nalgebra", "simba"]
 nalgebra_f32x8 = [ "nalgebra", "simba"]
@@ -27,7 +27,8 @@ features = ["mint", "rand", "debug-glam-assert"]
 
 [dependencies.nalgebra]
 features = ["std", "mint"]
-path = "../nalgebra-dev"
+git = "https://github.com/rustsim/nalgebra"
+branch = "soa_simd"
 optional = true
 
 [dependencies.ultraviolet]
