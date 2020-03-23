@@ -6,10 +6,11 @@ edition = "2018"
 
 [features]
 # defaults can be disabled for benchmarks but are required for tests
-default = ["cgmath", "euclid", "nalgebra", "nalgebra_f32x4", "nalgebra_f32x8", "nalgebra_f32x16", "ultraviolet", "vek", "pathfinder_geometry"]
-nalgebra_f32x4 = [ "nalgebra", "packed_simd"]
-nalgebra_f32x8 = [ "nalgebra", "packed_simd"]
-nalgebra_f32x16 = [ "nalgebra", "packed_simd"]
+default = ["cgmath", "euclid", "nalgebra", "nalgebra_f32x4", "nalgebra_f32x8", "nalgebra_f32x16", "ultraviolet", "ultraviolet_f32x4", "vek", "pathfinder_geometry"]
+ultraviolet_f32x4 = [ "ultraviolet" ]
+nalgebra_f32x4 = [ "nalgebra", "simba"]
+nalgebra_f32x8 = [ "nalgebra", "simba"]
+nalgebra_f32x16 = [ "nalgebra", "simba"]
 
 
 
@@ -25,16 +26,17 @@ features = ["mint", "rand", "debug-glam-assert"]
 # optional = true
 
 [dependencies.nalgebra]
-version = "0.20.0"
 features = ["std", "mint"]
+path = "../nalgebra-dev"
 optional = true
 
 [dependencies.ultraviolet]
 version = "0.4"
 optional = true
 
-[dependencies.packed_simd]
-version = "0.3"
+[dependencies.simba]
+path = "../simba"
+features = [ "simd" ]
 optional = true
 
 [dependencies.cgmath]
@@ -80,6 +82,18 @@ harness = false
 
 [[bench]]
 name = "matrix4"
+harness = false
+
+[[bench]]
+name = "isometry2d"
+harness = false
+
+[[bench]]
+name = "isometry3d"
+harness = false
+
+[[bench]]
+name = "isometries"
 harness = false
 
 [[bench]]

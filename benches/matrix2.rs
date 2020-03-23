@@ -15,9 +15,32 @@ fn bench_matrix2_ret_self(c: &mut Criterion) {
         use cgmath::Matrix2;
         bench_unop!(b, op => ret_self, ty => Matrix2<f32>)
     });
+    bench_ultraviolet!(group, |b| {
+        use ultraviolet::Mat2;
+        bench_unop!(b, op => ret_self, ty => Mat2)
+    });
+    bench_ultraviolet_f32x4!(group, |b| {
+        use ultraviolet::Wat2;
+        bench_unop4!(b, op => ret_self, ty => Wat2)
+    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Matrix2;
         bench_unop!(b, op => ret_self, ty => Matrix2<f32>)
+    });
+    bench_nalgebra_f32x4!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x4;
+        bench_unop4!(b, op => ret_self, ty => Matrix2<f32x4>)
+    });
+    bench_nalgebra_f32x8!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x8;
+        bench_unop8!(b, op => ret_self, ty => Matrix2<f32x8>)
+    });
+    bench_nalgebra_f32x16!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x16;
+        bench_unop16!(b, op => ret_self, ty => Matrix2<f32x16>)
     });
     bench_vek!(group, |b| {
         use vek::Mat2;
@@ -40,9 +63,32 @@ fn bench_matrix2_transpose(c: &mut Criterion) {
         use cgmath::{prelude::*, Matrix2};
         bench_unop!(b, op => transpose, ty => Matrix2<f32>)
     });
+    //    bench_ultraviolet!(group, |b| {
+    //        use ultraviolet::Mat2;
+    //        bench_unop!(b, op => transpose, ty => Mat2)
+    //    });
+    //    bench_ultraviolet_f32x4!(group, |b| {
+    //        use ultraviolet::Wat2;
+    //        bench_unop!(b, op => transpose, ty => Wat2)
+    //    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Matrix2;
         bench_unop!(b, op => transpose, ty => Matrix2<f32>)
+    });
+    bench_nalgebra_f32x4!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x4;
+        bench_unop4!(b, op => transpose, ty => Matrix2<f32x4>)
+    });
+    bench_nalgebra_f32x8!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x8;
+        bench_unop8!(b, op => transpose, ty => Matrix2<f32x8>)
+    });
+    bench_nalgebra_f32x16!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x16;
+        bench_unop16!(b, op => transpose, ty => Matrix2<f32x16>)
     });
     bench_vek!(group, |b| {
         use vek::Mat2;
@@ -86,6 +132,14 @@ fn bench_matrix2_inverse(c: &mut Criterion) {
         use cgmath::{prelude::*, Matrix2};
         bench_unop!(b, op => invert, ty => Matrix2<f32>)
     });
+    //    bench_ultraviolet!(group, |b| {
+    //        use ultraviolet::Mat2;
+    //        bench_unop!(b, op => inversed, ty => Mat2)
+    //    });
+    //    bench_ultraviolet_f32x4!(group, |b| {
+    //        use ultraviolet::Wat2;
+    //        bench_unop!(b, op => inversed, ty => Wat2)
+    //    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Matrix2;
         bench_unop!(b, op => try_inverse, ty => Matrix2<f32>)
@@ -108,9 +162,32 @@ fn bench_matrix2_mul_matrix2(c: &mut Criterion) {
         use cgmath::Matrix2;
         bench_binop!(b, op => mul, ty1 => Matrix2<f32>, ty2 => Matrix2<f32>)
     });
+    bench_ultraviolet!(group, |b| {
+        use ultraviolet::Mat2;
+        bench_binop!(b, op => mul, ty1 => Mat2, ty2 => Mat2)
+    });
+    bench_ultraviolet_f32x4!(group, |b| {
+        use ultraviolet::Wat2;
+        bench_binop4!(b, op => mul, ty1 => Wat2, ty2 => Wat2)
+    });
     bench_nalgebra!(group, |b| {
         use nalgebra::Matrix2;
         bench_binop!(b, op => mul, ty1 => Matrix2<f32>, ty2 => Matrix2<f32>)
+    });
+    bench_nalgebra_f32x4!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x4;
+        bench_binop4!(b, op => mul, ty1 => Matrix2<f32x4>, ty2 => Matrix2<f32x4>)
+    });
+    bench_nalgebra_f32x8!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x8;
+        bench_binop8!(b, op => mul, ty1 => Matrix2<f32x8>, ty2 => Matrix2<f32x8>)
+    });
+    bench_nalgebra_f32x16!(group, |b| {
+        use nalgebra::Matrix2;
+        use simba::simd::f32x16;
+        bench_binop16!(b, op => mul, ty1 => Matrix2<f32x16>, ty2 => Matrix2<f32x16>)
     });
     bench_vek!(group, |b| {
         use vek::Mat2;
@@ -136,9 +213,32 @@ fn bench_matrix2_mul_vector2(c: &mut Criterion) {
             use cgmath::{Matrix2, Vector2};
             bench_binop!(b, size, op => mul, ty1 => Matrix2<f32>, ty2 => Vector2<f32>)
         });
+        bench_ultraviolet!(group, size, |b, size| {
+            use ultraviolet::{Mat2, Vec2};
+            bench_binop!(b, size, op => mul, ty1 => Mat2, ty2 => Vec2)
+        });
+        bench_ultraviolet_f32x4!(group, size, |b, size| {
+            use ultraviolet::{Wat2, Wec2};
+            bench_binop4!(b, size, op => mul, ty1 => Wat2, ty2 => Wec2)
+        });
         bench_nalgebra!(group, size, |b, size| {
             use nalgebra::{Matrix2, Vector2};
             bench_binop!(b, size, op => mul, ty1 => Matrix2<f32>, ty2 => Vector2<f32>)
+        });
+        bench_nalgebra_f32x4!(group, size, |b, size| {
+            use nalgebra::{Matrix2, Vector2};
+            use simba::simd::f32x4;
+            bench_binop4!(b, size, op => mul, ty1 => Matrix2<f32x4>, ty2 => Vector2<f32x4>)
+        });
+        bench_nalgebra_f32x8!(group, size, |b, size| {
+            use nalgebra::{Matrix2, Vector2};
+            use simba::simd::f32x8;
+            bench_binop8!(b, size, op => mul, ty1 => Matrix2<f32x8>, ty2 => Vector2<f32x8>)
+        });
+        bench_nalgebra_f32x16!(group, size, |b, size| {
+            use nalgebra::{Matrix2, Vector2};
+            use simba::simd::f32x16;
+            bench_binop16!(b, size, op => mul, ty1 => Matrix2<f32x16>, ty2 => Vector2<f32x16>)
         });
         bench_vek!(group, size, |b, size| {
             use vek::{Mat2, Vec2};
