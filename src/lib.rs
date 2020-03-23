@@ -305,6 +305,12 @@ pub mod nalgebra_support {
     impl_bench_value!(nalgebra::Matrix4<f32>, random_mint_homogeneous_mat4);
     impl_bench_value!(nalgebra::Point2<f32>, random_na_point2);
     impl_bench_value!(nalgebra::Point3<f32>, random_na_point3);
+    impl_bench_value!(nalgebra::Point2<f32x4>, random_na_point2x4);
+    impl_bench_value!(nalgebra::Point3<f32x4>, random_na_point3x4);
+    impl_bench_value!(nalgebra::Point2<f32x8>, random_na_point2x8);
+    impl_bench_value!(nalgebra::Point3<f32x8>, random_na_point3x8);
+    impl_bench_value!(nalgebra::Point2<f32x16>, random_na_point2x16);
+    impl_bench_value!(nalgebra::Point3<f32x16>, random_na_point3x16);
     impl_bench_value!(nalgebra::Transform2<f32>, random_na_transform2);
     impl_bench_value!(nalgebra::Transform3<f32>, random_na_transform3);
     impl_bench_value!(nalgebra::UnitQuaternion<f32>, random_na_quat);
@@ -397,17 +403,11 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_quat<R>(rng: &mut R) -> nalgebra::UnitQuaternion<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_quat<R: Rng>(rng: &mut R) -> nalgebra::UnitQuaternion<f32> {
         nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into())
     }
 
-    fn random_na_quat4<R>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_quat4<R: Rng>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x4> {
         [
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
@@ -417,10 +417,7 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_quat8<R>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_quat8<R: Rng>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x8> {
         [
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
@@ -434,10 +431,7 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_quat16<R>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_quat16<R: Rng>(rng: &mut R) -> nalgebra::UnitQuaternion<f32x16> {
         [
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
             nalgebra::UnitQuaternion::from_quaternion(random_mint_quat(rng).into()),
@@ -459,28 +453,19 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_iso2<R>(rng: &mut R) -> nalgebra::Isometry2<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_iso2<R: Rng>(rng: &mut R) -> nalgebra::Isometry2<f32> {
         let rot = nalgebra::UnitComplex::random_value(rng);
         let tra = nalgebra::Vector2::random_value(rng);
         nalgebra::Isometry2::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso2x4<R>(rng: &mut R) -> nalgebra::Isometry2<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_iso2x4<R: Rng>(rng: &mut R) -> nalgebra::Isometry2<f32x4> {
         let rot = nalgebra::UnitComplex::random_value(rng);
         let tra = nalgebra::Vector2::random_value(rng);
         nalgebra::Isometry2::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso2x8<R>(rng: &mut R) -> nalgebra::Isometry2<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_iso2x8<R: Rng>(rng: &mut R) -> nalgebra::Isometry2<f32x8> {
         let rot = nalgebra::UnitComplex::random_value(rng);
         let tra = nalgebra::Vector2::random_value(rng);
         nalgebra::Isometry2::from_parts(tra.into(), rot)
@@ -495,109 +480,91 @@ pub mod nalgebra_support {
         nalgebra::Isometry2::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso3<R>(rng: &mut R) -> nalgebra::Isometry3<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_iso3<R: Rng>(rng: &mut R) -> nalgebra::Isometry3<f32> {
         let rot = nalgebra::UnitQuaternion::random_value(rng);
         let tra = nalgebra::Vector3::random_value(rng);
         nalgebra::Isometry3::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso3x4<R>(rng: &mut R) -> nalgebra::Isometry3<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_iso3x4<R: Rng>(rng: &mut R) -> nalgebra::Isometry3<f32x4> {
         let rot = nalgebra::UnitQuaternion::random_value(rng);
         let tra = nalgebra::Vector3::random_value(rng);
         nalgebra::Isometry3::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso3x8<R>(rng: &mut R) -> nalgebra::Isometry3<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_iso3x8<R: Rng>(rng: &mut R) -> nalgebra::Isometry3<f32x8> {
         let rot = nalgebra::UnitQuaternion::random_value(rng);
         let tra = nalgebra::Vector3::random_value(rng);
         nalgebra::Isometry3::from_parts(tra.into(), rot)
     }
 
-    fn random_na_iso3x16<R>(rng: &mut R) -> nalgebra::Isometry3<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_iso3x16<R: Rng>(rng: &mut R) -> nalgebra::Isometry3<f32x16> {
         let rot = nalgebra::UnitQuaternion::random_value(rng);
         let tra = nalgebra::Vector3::random_value(rng);
         nalgebra::Isometry3::from_parts(tra.into(), rot)
     }
 
-    fn random_na_transform2<R>(rng: &mut R) -> nalgebra::Transform2<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_transform2<R: Rng>(rng: &mut R) -> nalgebra::Transform2<f32> {
         nalgebra::Transform2::from_matrix_unchecked(random_mint_homogeneous_mat3(rng).into())
     }
 
-    fn random_na_transform3<R>(rng: &mut R) -> nalgebra::Transform3<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_transform3<R: Rng>(rng: &mut R) -> nalgebra::Transform3<f32> {
         nalgebra::Transform3::from_matrix_unchecked(random_mint_homogeneous_mat4(rng).into())
     }
 
-    fn random_na_point2<R>(rng: &mut R) -> nalgebra::Point2<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_point2<R: Rng>(rng: &mut R) -> nalgebra::Point2<f32> {
         rng.gen::<[f32; 2]>().into()
     }
 
-    fn random_na_point3<R>(rng: &mut R) -> nalgebra::Point3<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_point3<R: Rng>(rng: &mut R) -> nalgebra::Point3<f32> {
         rng.gen::<[f32; 3]>().into()
     }
 
-    fn random_na_vec2<R>(rng: &mut R) -> nalgebra::Vector2<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_point2x4<R: Rng>(rng: &mut R) -> nalgebra::Point2<f32x4> {
+        random_na_vec2x4(rng).into()
+    }
+
+    fn random_na_point3x4<R: Rng>(rng: &mut R) -> nalgebra::Point3<f32x4> {
+        random_na_vec3x4(rng).into()
+    }
+
+    fn random_na_point2x8<R: Rng>(rng: &mut R) -> nalgebra::Point2<f32x8> {
+        random_na_vec2x8(rng).into()
+    }
+
+    fn random_na_point3x8<R: Rng>(rng: &mut R) -> nalgebra::Point3<f32x8> {
+        random_na_vec3x8(rng).into()
+    }
+
+    fn random_na_point2x16<R: Rng>(rng: &mut R) -> nalgebra::Point2<f32x16> {
+        random_na_vec2x16(rng).into()
+    }
+
+    fn random_na_point3x16<R: Rng>(rng: &mut R) -> nalgebra::Point3<f32x16> {
+        random_na_vec3x16(rng).into()
+    }
+
+    fn random_na_vec2<R: Rng>(rng: &mut R) -> nalgebra::Vector2<f32> {
         rng.gen::<[f32; 2]>().into()
     }
 
-    fn random_na_vec3<R>(rng: &mut R) -> nalgebra::Vector3<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_vec3<R: Rng>(rng: &mut R) -> nalgebra::Vector3<f32> {
         rng.gen::<[f32; 3]>().into()
     }
 
-    fn random_na_vec4<R>(rng: &mut R) -> nalgebra::Vector4<f32>
-    where
-        R: Rng,
-    {
+    fn random_na_vec4<R: Rng>(rng: &mut R) -> nalgebra::Vector4<f32> {
         rng.gen::<[f32; 4]>().into()
     }
 
-    fn random_na_vec2x4<R>(rng: &mut R) -> nalgebra::Vector2<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_vec2x4<R: Rng>(rng: &mut R) -> nalgebra::Vector2<f32x4> {
         [random_f32x4(rng), random_f32x4(rng)].into()
     }
 
-    fn random_na_vec3x4<R>(rng: &mut R) -> nalgebra::Vector3<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_vec3x4<R: Rng>(rng: &mut R) -> nalgebra::Vector3<f32x4> {
         [random_f32x4(rng), random_f32x4(rng), random_f32x4(rng)].into()
     }
 
-    fn random_na_vec4x4<R>(rng: &mut R) -> nalgebra::Vector4<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_vec4x4<R: Rng>(rng: &mut R) -> nalgebra::Vector4<f32x4> {
         [
             random_f32x4(rng),
             random_f32x4(rng),
@@ -607,24 +574,15 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_vec2x8<R>(rng: &mut R) -> nalgebra::Vector2<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_vec2x8<R: Rng>(rng: &mut R) -> nalgebra::Vector2<f32x8> {
         [random_f32x8(rng), random_f32x8(rng)].into()
     }
 
-    fn random_na_vec3x8<R>(rng: &mut R) -> nalgebra::Vector3<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_vec3x8<R: Rng>(rng: &mut R) -> nalgebra::Vector3<f32x8> {
         [random_f32x8(rng), random_f32x8(rng), random_f32x8(rng)].into()
     }
 
-    fn random_na_vec4x8<R>(rng: &mut R) -> nalgebra::Vector4<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_vec4x8<R: Rng>(rng: &mut R) -> nalgebra::Vector4<f32x8> {
         [
             random_f32x8(rng),
             random_f32x8(rng),
@@ -634,24 +592,15 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_vec2x16<R>(rng: &mut R) -> nalgebra::Vector2<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_vec2x16<R: Rng>(rng: &mut R) -> nalgebra::Vector2<f32x16> {
         [random_f32x16(rng), random_f32x16(rng)].into()
     }
 
-    fn random_na_vec3x16<R>(rng: &mut R) -> nalgebra::Vector3<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_vec3x16<R: Rng>(rng: &mut R) -> nalgebra::Vector3<f32x16> {
         [random_f32x16(rng), random_f32x16(rng), random_f32x16(rng)].into()
     }
 
-    fn random_na_vec4x16<R>(rng: &mut R) -> nalgebra::Vector4<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_vec4x16<R: Rng>(rng: &mut R) -> nalgebra::Vector4<f32x16> {
         [
             random_f32x16(rng),
             random_f32x16(rng),
@@ -661,87 +610,51 @@ pub mod nalgebra_support {
         .into()
     }
 
-    fn random_na_mat2x4<R>(rng: &mut R) -> nalgebra::Matrix2<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_mat2x4<R: Rng>(rng: &mut R) -> nalgebra::Matrix2<f32x4> {
         nalgebra::Matrix2::from_fn(|_, _| random_f32x4(rng))
     }
 
-    fn random_na_mat3x4<R>(rng: &mut R) -> nalgebra::Matrix3<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_mat3x4<R: Rng>(rng: &mut R) -> nalgebra::Matrix3<f32x4> {
         nalgebra::Matrix3::from_fn(|_, _| random_f32x4(rng))
     }
 
-    fn random_na_mat4x4<R>(rng: &mut R) -> nalgebra::Matrix4<f32x4>
-    where
-        R: Rng,
-    {
+    fn random_na_mat4x4<R: Rng>(rng: &mut R) -> nalgebra::Matrix4<f32x4> {
         nalgebra::Matrix4::from_fn(|_, _| random_f32x4(rng))
     }
 
-    fn random_na_mat2x8<R>(rng: &mut R) -> nalgebra::Matrix2<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_mat2x8<R: Rng>(rng: &mut R) -> nalgebra::Matrix2<f32x8> {
         nalgebra::Matrix2::from_fn(|_, _| random_f32x8(rng))
     }
 
-    fn random_na_mat3x8<R>(rng: &mut R) -> nalgebra::Matrix3<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_mat3x8<R: Rng>(rng: &mut R) -> nalgebra::Matrix3<f32x8> {
         nalgebra::Matrix3::from_fn(|_, _| random_f32x8(rng))
     }
 
-    fn random_na_mat4x8<R>(rng: &mut R) -> nalgebra::Matrix4<f32x8>
-    where
-        R: Rng,
-    {
+    fn random_na_mat4x8<R: Rng>(rng: &mut R) -> nalgebra::Matrix4<f32x8> {
         nalgebra::Matrix4::from_fn(|_, _| random_f32x8(rng))
     }
 
-    fn random_na_mat2x16<R>(rng: &mut R) -> nalgebra::Matrix2<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_mat2x16<R: Rng>(rng: &mut R) -> nalgebra::Matrix2<f32x16> {
         nalgebra::Matrix2::from_fn(|_, _| random_f32x16(rng))
     }
 
-    fn random_na_mat3x16<R>(rng: &mut R) -> nalgebra::Matrix3<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_mat3x16<R: Rng>(rng: &mut R) -> nalgebra::Matrix3<f32x16> {
         nalgebra::Matrix3::from_fn(|_, _| random_f32x16(rng))
     }
 
-    fn random_na_mat4x16<R>(rng: &mut R) -> nalgebra::Matrix4<f32x16>
-    where
-        R: Rng,
-    {
+    fn random_na_mat4x16<R: Rng>(rng: &mut R) -> nalgebra::Matrix4<f32x16> {
         nalgebra::Matrix4::from_fn(|_, _| random_f32x16(rng))
     }
 
-    fn random_f32x4<R>(rng: &mut R) -> f32x4
-    where
-        R: Rng,
-    {
+    fn random_f32x4<R: Rng>(rng: &mut R) -> f32x4 {
         rng.gen::<[f32; 4]>().into()
     }
 
-    fn random_f32x8<R>(rng: &mut R) -> f32x8
-    where
-        R: Rng,
-    {
+    fn random_f32x8<R: Rng>(rng: &mut R) -> f32x8 {
         rng.gen::<[f32; 8]>().into()
     }
 
-    fn random_f32x16<R>(rng: &mut R) -> f32x16
-    where
-        R: Rng,
-    {
+    fn random_f32x16<R: Rng>(rng: &mut R) -> f32x16 {
         rng.gen::<[f32; 16]>().into()
     }
 
