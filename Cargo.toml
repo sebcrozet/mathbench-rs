@@ -27,8 +27,7 @@ features = ["mint", "rand", "debug-glam-assert"]
 
 [dependencies.nalgebra]
 features = ["std", "mint"]
-git = "https://github.com/rustsim/nalgebra"
-branch = "soa_simd"
+version = "0.21"
 optional = true
 
 [dependencies.ultraviolet]

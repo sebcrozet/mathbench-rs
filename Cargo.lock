@@ -394,8 +394,9 @@ checksum = "c8d80717448454e312cb3148adab19943f1553a8fbc828a39b0e91911f488130"
 
 [[package]]
 name = "nalgebra"
-version = "0.20.0"
-source = "git+https://github.com/rustsim/nalgebra?branch=soa_simd#26595049c9dce5621aee997fe8e2d01373b91aa3"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d630f146ae751cfb43db9e0ad6bd73819a546a38baa5d4a9de69823c389c78a1"
 dependencies = [
  "approx 0.3.2",
  "generic-array",
